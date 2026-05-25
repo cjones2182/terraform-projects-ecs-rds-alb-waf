@@ -1,0 +1,32 @@
+name: terraform validate
+
+on:
+
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs: 
+  validate:
+    runs-on: ubuntu-latest
+
+    steps: 
+
+      - name: checkout repository
+        uses: actions/checkout@v4
+
+      - name: setup terraform
+        uses: hashicorp/setup-terraform@v4
+
+      - name: terraform init 
+        run:  terraform init -input=false
+        working-directory: env/dev
+
+      - name: terraform validate 
+        run:  terraform validate -no-color
+        working-directory: env/dev
+
+      
+
+  

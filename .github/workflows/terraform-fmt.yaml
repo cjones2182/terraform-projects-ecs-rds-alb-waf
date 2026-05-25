@@ -1,0 +1,27 @@
+name: terraform fmt
+
+on:
+  
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  format: 
+    runs-on: ubuntu-latest
+
+
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4
+
+        
+      - name: set up terraform
+        uses: hashicorp/setup-terraform@v4
+       
+      - name: terraform fmt
+        run:  terraform fmt -check
+        working-directory: env/dev
+  
+   
