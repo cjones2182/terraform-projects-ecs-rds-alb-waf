@@ -5,4 +5,7 @@ resource "aws_ecr_repository" "cory_repository" {
   image_scanning_configuration {
     scan_on_push = true
   }
+  tags = {
+    name = "${var.environment}-ecr"
+  }
 }

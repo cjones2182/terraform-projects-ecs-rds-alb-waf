@@ -28,6 +28,7 @@ module "s3" {
 }
 module "ecs" {
   source = "../../modules/ecs"
+  environment = var.environment
 }
 module "waf" {
   source   = "../../modules/waf"
