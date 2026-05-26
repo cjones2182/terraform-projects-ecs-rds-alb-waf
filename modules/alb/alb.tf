@@ -7,6 +7,7 @@ resource "aws_lb" "main_alb" {
 
 access_logs {
   bucket = var.central_log_bucket281330
+  prefix = "alb-access-logs"
   enabled = true
   }
   tags = {
