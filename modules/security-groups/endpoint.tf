@@ -2,6 +2,10 @@ resource "aws_security_group" "endpoint_security_group" {
   name = "endpoint-security-group"
   description = "security group for secrets endpoint"
   vpc_id = var.vpc_id
+
+  tags = {
+    name = "${var.environment}-endpoint-security-group"
+  }
 }
 resource "aws_vpc_security_group_ingress_rule" "endpoint_ingress_rule" {
 security_group_id = aws_security_group.endpoint_security_group.id

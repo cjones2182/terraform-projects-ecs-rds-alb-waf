@@ -2,6 +2,10 @@ resource "aws_security_group" "rds_security_group" {
   name = "rds-security-group"
   description = "security group for rds"
   vpc_id = var.vpc_id
+
+  tags = {
+    name = "${var.environment}-rds-security-group"
+  }
 }
 
 resource "aws_vpc_security_group_ingress_rule" "rds_ingress_rule" {
