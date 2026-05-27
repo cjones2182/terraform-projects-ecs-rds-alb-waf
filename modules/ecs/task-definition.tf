@@ -12,6 +12,10 @@ resource "aws_ecs_task_definition" "service" {
       cpu       = 256
       memory    = 512
       essential = true
+      secrets = [{
+        name  = "rds-password"
+        valueFrom = var.aws_secretsmanager_secret
+      }]
       portMappings = [
         {
           containerPort = 80

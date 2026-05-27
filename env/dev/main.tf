@@ -30,6 +30,7 @@ module "s3" {
 module "ecs" {
   source = "../../modules/ecs"
   environment = var.environment
+  aws_secretsmanager_secret = module.secrets.aws_secretsmanager_secret
 }
 module "waf" {
   source   = "../../modules/waf"
