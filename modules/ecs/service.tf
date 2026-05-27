@@ -7,7 +7,7 @@ resource "aws_ecs_service" "app_ecs_service" {
    load_balancer {
     target_group_arn = var.alb_target_group
     container_name   = "cory-container"
-    container_port   = 8080
+    container_port   = 80
    }
    network_configuration {
      subnets = var.private_subnets
