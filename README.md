@@ -12,6 +12,10 @@ VPC across 3 AZs. Public subnets for the ALB, private for ECS, isolated for RDS.
 NAT Gateways for outbound. VPC Endpoints for S3 and ECR to avoid routing through
 the public internet.
 
+## CI/CD
+
+ added terraform fmt and terraform validate. .github works
+
 ## Modules
 
 - `vpc` — subnets, route tables, NAT gateways, VPC endpoints
