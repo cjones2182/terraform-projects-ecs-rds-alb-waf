@@ -1,19 +1,32 @@
-# Terraform AWS Infrastructure
+# terraform-projects-ecs-rds-alb-waf
 
-Deployed a complete AWS environment using Terraform modules. Architecture includes VPC with public/private/database subnets across multiple AZs, ECS Fargate cluster running 3 container instances, RDS MySQL with Multi-AZ, ALB with WAF protection and S3 access logging, Secrets Manager for credentials. Security groups follow least-privilege pattern. All infrastructure is version controlled and repeatable.
+Three-tier AWS environment built with Terraform. Containerized app running on ECS 
+Fargate, MySQL backend on RDS Multi-AZ, traffic routed through an ALB with WAF 
+in front. Everything lives in private subnets except the load balancer.
 
-## Stack
-Terraform | AWS | ECS Fargate | RDS MySQL | ALB | WAFv2 | S3 | Secrets Manager
+## Architecture
 
-## Folder Structure
-- modules/vpc - Network with NAT gateways and VPC endpoints
-- modules/security-groups - Tier-specific firewall rules
-- modules/alb - Load balancer with access logging
-- modules/ecs - Task definitions and service configuration
-- modules/rds - MySQL database in private subnets
-- modules/s3 - Encrypted logging bucket
-- modules/secrets - RDS credential storage
-- modules/waf - AWS managed rule sets
+Internet → WAFv2 → ALB → ECS Fargate (3 tasks) → RDS MySQL Multi-AZ
 
-## Deployment
-terraform init && terraform apply
+VPC across 3 AZs. Public subnets for the ALB, private for ECS, isolated for RDS.
+NAT Gateways for outbound. VPC Endpoints for S3 and ECR to avoid routing through
+the public internet.
+
+## Modules
+
+- `vpc` — subnets, route tables, NAT gateways, VPC endpoints
+- `security-groups` — per-tier rules, each layer only accepts from the one above
+- `alb` — load balancer, listener rules, S3 access logging
+- `ecs` — cluster, task definitions, Fargate service
+- `rds` — MySQL, Multi-AZ, private subnet group
+- `s3` — encrypted logging bucket
+- `secrets` — RDS credentials in Secrets Manager, not hardcoded
+- `waf` — AWS Managed Rules (Core Rule Set, Known Bad Inputs)
+
+## Usage
+
+```bash
+terraform init
+terraform plan -var-file="env/dev/terraform.tfvars"
+terraform apply -var-file="env/dev/terraform.tfvars"
+```
